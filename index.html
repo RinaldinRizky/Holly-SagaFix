@@ -108,21 +108,21 @@
 														<h5>Customer Detail</h5>
 														<label for="name">
 															<span>Name</span>
-															<input type="text" name="name" id="name">
+															<input type="text" name="name" id="name" required>
 														</label>
 														<label for="email">
 															<span>Email</span>
-															<input type="email" name="email" id="email">
+															<input type="email" name="email" id="email" required>
 														</label>
 														<label for="phone">
 															<span>Whatsapp</span>
-															<input type="number" name="phone" id="phone" autocomplete="off">
+															<input type="number" name="phone" id="phone" required autocomplete="off">
 														</label>
 														<div class="cart-bottom clearfix">
-															<button id="verifyButton" class="button-one floatright text-uppercase" data-text="Verify" onclick="sendVerificationEmail()">Verify</button>
+															<button type="button" id="verifyButton" class="button-one floatright text-uppercase disabled" data-text="Verify" onclick="sendVerificationEmail()" disabled>Verify</button>
 														</div>
 														<div class="cart-bottom clearfix">
-															<button id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
+															<button type="button" id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
 														</div>
 													</form>
 												</div>
@@ -540,7 +540,7 @@
 		<!-- all javascript -->
 		<!-- jquery latest version -->
 		<script>
-    document.addEventListener('alpine:init', () => {
+       document.addEventListener('alpine:init', () => {
             Alpine.store('cart', {
                 items: [],
                 total: 0,
