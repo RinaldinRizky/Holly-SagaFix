@@ -131,13 +131,43 @@ document.addEventListener('alpine:init', () => {
 })
 
 // Form Validation
-const checkoutButton = document.querySelector('.button-one');
+const checkoutButton = document.querySelector('#checkoutButton');
+const verifyButton = document.querySelector('#verifyButton');
 checkoutButton.disabled = true;
 
 const form = document.querySelector('#checkoutForm');
 
 form.addEventListener('input', function() {
+    validateForm();
+});
+
+verifyButton.addEventListener('click', async function() {
+    // Kirim email verifikasi
+    const email = document.querySelector('input[name="email"]').value;
+    if (email) {
+        try {
+            const response = await fetch('path/to/verification/endpoint', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            });
+            if (response.ok) {
+                alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
+            } else {
+                alert('Gagal mengirim email verifikasi.');
+            }
+        } catch (err) {
+            console.log(err);
+            alert('Terjadi kesalahan saat mengirim email verifikasi.');
+        }
+    } else {
+        alert('Harap masukkan alamat email.');
+    }
+});
+
+function validateForm() {
     let allFilled = true;
+    let emailVerified = localStorage.getItem('emailVerified') === 'true';
 
     for (let i = 0; i < form.elements.length; i++) {
         if (form.elements[i].type !== 'button' && form.elements[i].type !== 'submit') {
@@ -148,14 +178,39 @@ form.addEventListener('input', function() {
         }
     }
 
-    if (allFilled) {
+    if (allFilled && emailVerified) {
         checkoutButton.disabled = false;
         checkoutButton.classList.remove('disabled');
     } else {
         checkoutButton.disabled = true;
         checkoutButton.classList.add('disabled');
     }
-});
+}
+// const checkoutButton = document.querySelector('.button-one');
+// checkoutButton.disabled = true;
+
+// const form = document.querySelector('#checkoutForm');
+
+// form.addEventListener('input', function() {
+//     let allFilled = true;
+
+//     for (let i = 0; i < form.elements.length; i++) {
+//         if (form.elements[i].type !== 'button' && form.elements[i].type !== 'submit') {
+//             if (form.elements[i].value.trim() === '') {
+//                 allFilled = false;
+//                 break;
+//             }
+//         }
+//     }
+
+//     if (allFilled) {
+//         checkoutButton.disabled = false;
+//         checkoutButton.classList.remove('disabled');
+//     } else {
+//         checkoutButton.disabled = true;
+//         checkoutButton.classList.add('disabled');
+//     }
+// });
 
 
 // Kirim Data ketika tombol checkout di klik
