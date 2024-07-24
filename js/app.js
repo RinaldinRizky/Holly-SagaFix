@@ -72,6 +72,99 @@ document.addEventListener('alpine:init', () => {
             window.location.href = `${productPages[id]}?id=${id}`;
         }
     }));
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkoutButton = document.querySelector('#checkout-btn');
+        const verifyButton = document.querySelector('#verify-btn');
+        const form = document.querySelector('#checkoutForm');
+    
+        let emailVerified = false;
+    
+        form.addEventListener('input', function() {
+            validateForm();
+        });
+    
+        verifyButton.addEventListener('click', function() {
+            const email = document.querySelector('input[name="email"]').value;
+    
+            fetch('sendVerificationEmail.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Verification email sent.') {
+                    alert('Verification email sent. Please check your inbox.');
+                    localStorage.setItem('emailVerified', 'true');
+                    emailVerified = true;
+                    validateForm();
+                } else {
+                    alert('Failed to send verification email: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    
+        function validateForm() {
+            const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+            const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
+    
+            if (allFilled && isEmailVerified) {
+                checkoutButton.disabled = false;
+                checkoutButton.classList.remove('disabled');
+            } else {
+                checkoutButton.disabled = true;
+                checkoutButton.classList.add('disabled');
+            }
+        }
+    
+        checkoutButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = new URLSearchParams(formData);
+    
+            try {
+                const response = await fetch('/php/placeOrder.php', {
+                    method: 'POST',
+                    body: data,
+                });
+                const token = await response.text();
+                window.snap.pay(token, {
+                    onSuccess: function(result) {
+                        alert("Pembayaran Sukses!");
+                        console.log(result);
+                        sendProductFiles();
+                    },
+                    onPending: function(result) {
+                        alert("Menunggu Pembayaran!");
+                        console.log(result);
+                    },
+                    onError: function(result) {
+                        alert("Pembayaran Gagal!");
+                        console.log(result);
+                    },
+                    onClose: function() {
+                        alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+                    }
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    
+        function sendProductFiles() {
+            const items = JSON.parse(document.querySelector('input[name="items"]').value);
+            items.forEach(item => {
+                // Kirim file sesuai dengan item yang dibeli
+                // Implementasikan fungsi ini sesuai kebutuhan
+                console.log(`Mengirim file untuk produk: ${item.name}`);
+            });
+        }
+    });
+    
 
     Alpine.store('cart', {
         items: [],
@@ -98,94 +191,3 @@ document.addEventListener('alpine:init', () => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const checkoutButton = document.querySelector('#checkout-btn');
-    const verifyButton = document.querySelector('#verify-btn');
-    const form = document.querySelector('#checkoutForm');
-
-    let emailVerified = false;
-
-    form.addEventListener('input', function() {
-        validateForm();
-    });
-
-    verifyButton.addEventListener('click', function() {
-        const email = document.querySelector('input[name="email"]').value;
-
-        fetch('sendVerificationEmail.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Verification email sent.') {
-                alert('Verification email sent. Please check your inbox.');
-                localStorage.setItem('emailVerified', 'true');
-                emailVerified = true;
-                validateForm();
-            } else {
-                alert('Failed to send verification email: ' + data.error);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
-
-    function validateForm() {
-        const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-        const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
-
-        if (allFilled && isEmailVerified) {
-            checkoutButton.disabled = false;
-            checkoutButton.classList.remove('disabled');
-        } else {
-            checkoutButton.disabled = true;
-            checkoutButton.classList.add('disabled');
-        }
-    }
-
-    checkoutButton.addEventListener('click', async function(e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = new URLSearchParams(formData);
-
-        try {
-            const response = await fetch('/php/placeOrder.php', {
-                method: 'POST',
-                body: data,
-            });
-            const token = await response.text();
-            window.snap.pay(token, {
-                onSuccess: function(result) {
-                    alert("Pembayaran Sukses!");
-                    console.log(result);
-                    sendProductFiles();
-                },
-                onPending: function(result) {
-                    alert("Menunggu Pembayaran!");
-                    console.log(result);
-                },
-                onError: function(result) {
-                    alert("Pembayaran Gagal!");
-                    console.log(result);
-                },
-                onClose: function() {
-                    alert('Anda menutup popup tanpa menyelesaikan pembayaran');
-                }
-            });
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    function sendProductFiles() {
-        const items = JSON.parse(document.querySelector('input[name="items"]').value);
-        items.forEach(item => {
-            // Kirim file sesuai dengan item yang dibeli
-            // Implementasikan fungsi ini sesuai kebutuhan
-            console.log(`Mengirim file untuk produk: ${item.name}`);
-        });
-    }
-});
