@@ -233,7 +233,19 @@
 /* -----------------------------------------------------
 	Input
 ----------------------------------------------------- */
-input[type="text"], input[type="password"], input[type="email"], input[type="phone"] {
+input[type="text"], input[type="password"] {
+  background: #f6f6f6 none repeat scroll 0 0;
+  border: medium none;
+  box-shadow: none;
+  color: #999;
+  height: 40px;
+  margin-bottom: 15px;
+  padding: 0 20px;
+  transition: all 0.5s ease 0s;
+  width: 100%;
+  outline: none;
+}
+input[type="phone"], input[type="email"] {
   background: #f6f6f6 none repeat scroll 0 0;
   border: medium none;
   box-shadow: none;
