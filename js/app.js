@@ -104,67 +104,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('#checkoutForm');
 
     let emailVerified = false;
-    let phoneNumberVerified = false;
 
     form.addEventListener('input', function() {
         validateForm();
     });
 
-    verifyButton.addEventListener('click', async function() {
+    verifyButton.addEventListener('click', function() {
         const email = document.querySelector('input[name="email"]').value;
-        const phone = document.querySelector('input[name="phone"]').value;
 
-        document.getElementById('verify-btn').addEventListener('click', function () {
-            var email = document.getElementById('email').value;
-
-            fetch('sendVerificationEmail.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Verification email sent.') {
-                    alert('Verification email sent. Please check your inbox.');
-                } else {
-                    alert('Failed to send verification email: ' + data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-
-        window.addEventListener('load', function () {
-            if (localStorage.getItem('emailVerified') === 'true') {
-                document.getElementById('checkout-btn').disabled = false;
+        fetch('sendVerificationEmail.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: email }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Verification email sent.') {
+                alert('Verification email sent. Please check your inbox.');
+                localStorage.setItem('emailVerified', 'true');
+                emailVerified = true;
+                validateForm();
+            } else {
+                alert('Failed to send verification email: ' + data.error);
             }
-        });
-
-        if (validateEmail(email) && validatePhoneNumber(phone)) {
-            try {
-                const response = await fetch('/sendVerificationEmail.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email })
-                });
-                if (response.ok) {
-                    alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
-                    emailVerified = true;
-                    phoneNumberVerified = true; // Asumsi nomor WhatsApp terverifikasi jika sudah valid
-                    localStorage.setItem('emailVerified', 'true');
-                } else {
-                    alert('Gagal mengirim email verifikasi.');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Terjadi kesalahan saat mengirim email verifikasi.');
-            }
-        } else {
-            alert('Harap masukkan alamat email dan nomor WhatsApp yang valid.');
-        }
-
-        validateForm();
+        })
+        .catch(error => console.error('Error:', error));
     });
 
     function validateForm() {
@@ -178,16 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutButton.disabled = true;
             checkoutButton.classList.add('disabled');
         }
-    }
-
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    function validatePhoneNumber(phone) {
-        const re = /^\+?[0-9]{10,15}$/;
-        return re.test(phone);
     }
 
     checkoutButton.addEventListener('click', async function(e) {

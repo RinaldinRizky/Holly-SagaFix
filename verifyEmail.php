@@ -8,10 +8,10 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
     // Simpan status verifikasi di localStorage (opsional)
     echo "<script>
         localStorage.setItem('emailVerified', 'true');
-        alert('Email verified successfully.');
-        window.location.href = 'index.html'; // Ganti dengan halaman yang diinginkan setelah verifikasi
+        alert('Email verified successfully!');
+        window.close();
     </script>";
 } else {
-    echo 'Invalid email address.';
+    echo 'Invalid email verification link.';
 }
 ?>
