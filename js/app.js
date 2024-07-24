@@ -99,8 +99,8 @@ document.addEventListener('alpine:init', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const checkoutButton = document.querySelector('#checkoutButton');
-    const verifyButton = document.querySelector('#verifyButton');
+    const checkoutButton = document.querySelector('#checkout-btn');
+    const verifyButton = document.querySelector('#verify-btn');
     const form = document.querySelector('#checkoutForm');
 
     let emailVerified = false;
@@ -113,6 +113,33 @@ document.addEventListener('DOMContentLoaded', () => {
     verifyButton.addEventListener('click', async function() {
         const email = document.querySelector('input[name="email"]').value;
         const phone = document.querySelector('input[name="phone"]').value;
+
+        document.getElementById('verify-btn').addEventListener('click', function () {
+            var email = document.getElementById('email').value;
+
+            fetch('sendVerificationEmail.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Verification email sent.') {
+                    alert('Verification email sent. Please check your inbox.');
+                } else {
+                    alert('Failed to send verification email: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        window.addEventListener('load', function () {
+            if (localStorage.getItem('emailVerified') === 'true') {
+                document.getElementById('checkout-btn').disabled = false;
+            }
+        });
 
         if (validateEmail(email) && validatePhoneNumber(phone)) {
             try {
