@@ -68,7 +68,7 @@
 						<div class="row">
 							<div class="col-md-4 offset-md-4 col-7">
 								<div class="logo text-md-center">
-									<a href="index.html"><img src=" img/logo/logoholly.png " alt="" /></a>
+									<a href="index.html"><img src="img/logo/logoholly.png" alt="" /></a>
 								</div>
 							</div>
 							<div class="col-md-4 col-5">
@@ -119,10 +119,10 @@
 															<input type="number" name="phone" id="phone" autocomplete="off">
 														</label>
 														<div class="cart-bottom clearfix">
-															<button href="#" id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
+															<button id="verifyButton" class="button-one floatright text-uppercase" data-text="Verify" onclick="sendVerificationEmail()">Verify</button>
 														</div>
 														<div class="cart-bottom clearfix">
-															<button href="#" id="verifyButton" class="button-one floatright text-uppercase disabled" data-text="Verify" onclick="sendVerificationEmail()">Verify</button>
+															<button id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
 														</div>
 													</form>
 												</div>
@@ -134,6 +134,7 @@
 						</div>
 					</div>
 				</div>
+			</header>
 				<!-- MAIN-MENU START -->
 				<div class="menu-toggle hamburger hamburger--emphatic d-none d-md-block">
 					<div class="hamburger-box">
@@ -539,167 +540,114 @@
 		<!-- all javascript -->
 		<!-- jquery latest version -->
 		<script>
-			document.addEventListener('alpine:init', () => {
-		Alpine.store('cart', {
-        items: [],
-        total: 0,
-        quantity: 0,
-        add(newItem) {
-            const existingItem = this.items.find(item => item.id === newItem.id);
-            if (existingItem) {
-                alert('Produk ini sudah ada di keranjang!');
-                return;
-            }
-            this.items.push(newItem);
-            this.quantity++;
-            this.total += newItem.price;
-        },
-        remove(itemToRemove) {
-            const itemIndex = this.items.findIndex(item => item.id === itemToRemove.id);
-            if (itemIndex > -1) {
-                this.total -= this.items[itemIndex].price;
-                this.items.splice(itemIndex, 1);
-                this.quantity--;
-            }
-        }
-    });
-});
-// Enable the verify button when email is entered
-document.getElementById('email').addEventListener('input', function() {
-            var email = document.getElementById('email').value;
-            document.getElementById('verifyButton').disabled = !email;
+      document.addEventListener('alpine:init', () => {
+            Alpine.store('cart', {
+                items: [],
+                total: 0,
+                quantity: 0,
+                add(newItem) {
+                    const existingItem = this.items.find(item => item.id === newItem.id);
+                    if (existingItem) {
+                        alert('Produk ini sudah ada di keranjang!');
+                        return;
+                    }
+                    this.items.push(newItem);
+                    this.quantity++;
+                    this.total += newItem.price;
+                },
+                remove(itemToRemove) {
+                    const itemIndex = this.items.findIndex(item => item.id === itemToRemove.id);
+                    if (itemIndex > -1) {
+                        this.total -= this.items[itemIndex].price;
+                        this.items.splice(itemIndex, 1);
+                        this.quantity--;
+                    }
+                }
+            });
         });
 
-        // Function to send verification email
-        function sendVerificationEmail() {
-            var email = document.getElementById('email').value;
-            if (email) {
-                fetch('sendVerificationEmail.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email: email })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Verification email sent. Please check your email.');
-                    } else {
-                        alert('Error sending verification email.');
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkoutButton = document.querySelector('#checkoutButton');
+            const verifyButton = document.querySelector('#verifyButton');
+            const form = document.querySelector('#checkoutForm');
+
+            let emailVerified = false;
+
+            form.addEventListener('input', function() {
+                const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+                verifyButton.disabled = !allFilled;
+                verifyButton.classList.toggle('disabled', !allFilled);
+            });
+
+            verifyButton.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const email = form.querySelector('input[name="email"]').value;
+
+                if (validateEmail(email)) {
+                    try {
+                        const response = await fetch('sendVerificationEmail.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email })
+                        });
+                        if (response.ok) {
+                            alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
+                            emailVerified = true;
+                            localStorage.setItem('emailVerified', 'true');
+                            validateForm();
+                        } else {
+                            alert('Gagal mengirim email verifikasi.');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Terjadi kesalahan saat mengirim email verifikasi.');
                     }
-                });
-            }
-        }
-
-        // Function to place order
-        function placeOrder() {
-            var name = document.getElementById('name').value;
-            var email = document.getElementById('email').value;
-            var whatsapp = document.getElementById('whatsapp').value;
-
-            if (!document.getElementById('checkoutButton').disabled) {
-                fetch('placeOrder.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name: name, email: email, whatsapp: whatsapp })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        window.location.href = data.paymentUrl;
-                    } else {
-                        alert('Error placing order.');
-                    }
-                });
-            } else {
-                alert('Please verify your email before checking out.');
-            }
-        }
-document.addEventListener('DOMContentLoaded', () => {
-    const checkoutButton = document.querySelector('#checkoutButton');
-    const verifyButton = document.querySelector('#verifyButton');
-    const form = document.querySelector('#checkoutForm');
-
-    let emailVerified = false;
-
-    form.addEventListener('input', function() {
-        const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-        verifyButton.disabled = !allFilled;
-        verifyButton.classList.toggle('disabled', !allFilled);
-    });
-
-    verifyButton.addEventListener('click', async function(e) {
-        e.preventDefault();
-        const email = form.querySelector('input[name="email"]').value;
-
-        if (validateEmail(email)) {
-            try {
-                const response = await fetch('sendVerificationEmail.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email })
-                });
-                if (response.ok) {
-                    alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
-                    emailVerified = true;
-                    localStorage.setItem('emailVerified', 'true');
-                    validateForm();
                 } else {
-                    alert('Gagal mengirim email verifikasi.');
+                    alert('Harap masukkan alamat email yang valid.');
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Terjadi kesalahan saat mengirim email verifikasi.');
+            });
+
+            function validateForm() {
+                const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+                const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
+
+                checkoutButton.disabled = !(allFilled && isEmailVerified);
+                checkoutButton.classList.toggle('disabled', !(allFilled && isEmailVerified));
             }
-        } else {
-            alert('Harap masukkan alamat email yang valid.');
-        }
-    });
 
-    function validateForm() {
-        const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-        const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
 
-        checkoutButton.disabled = !(allFilled && isEmailVerified);
-        checkoutButton.classList.toggle('disabled', !(allFilled && isEmailVerified));
-    }
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = new URLSearchParams(formData);
 
-    function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
-
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = new URLSearchParams(formData);
-
-        try {
-            const response = await fetch('placeOrder.php', {
-                method: 'POST',
-                body: data
-            });
-            const token = await response.text();
-            window.snap.pay(token, {
-                onSuccess: function(result) {
-                    alert("Pembayaran Berhasil!");
-                    window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing';
-                },
-                onPending: function(result) {
-                    alert("Pembayaran Anda tertunda.");
-                },
-                onError: function(result) {
-                    alert("Terjadi kesalahan dalam pembayaran.");
+                try {
+                    const response = await fetch('placeOrder.php', {
+                        method: 'POST',
+                        body: data
+                    });
+                    const token = await response.text();
+                    window.snap.pay(token, {
+                        onSuccess: function(result) {
+                            alert("Pembayaran Berhasil!");
+                            window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing';
+                        },
+                        onPending: function(result) {
+                            alert("Pembayaran Anda tertunda.");
+                        },
+                        onError: function(result) {
+                            alert("Terjadi kesalahan dalam pembayaran.");
+                        }
+                    });
+                } catch (err) {
+                    console.error(err.message);
                 }
             });
-        } catch (err) {
-            console.error(err.message);
-        }
-    });
-});
+        });
 		</script>
 		<script src="js/vendor/jquery-3.6.0.min.js"></script>
 		<script src="js/vendor/jquery-migrate-3.3.2.min.js"></script>
