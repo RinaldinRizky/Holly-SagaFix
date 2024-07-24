@@ -307,8 +307,7 @@
                         <h4 class="title-1 title-border text-uppercase mb-30">new member</h4>
                         <p class="text-gray">If you have an account with us, Please login!</p>
                         <div class="error-text" style="display: none;">Error</div>
-                        <input type="text" name="fname" placeholder="First Name" required pattern="[a-zA-Z\s]*">
-                        <input type="text" name="lname" placeholder="Last Name" required pattern="[a-zA-Z\s]*">
+                        <input type="text" name="lname" placeholder="Full Name" required pattern="[a-zA-Z\s]*">
                         <input type="email" name="email" placeholder="Email address here..." required>
                         <input type="phone" name="phone" placeholder="Phone Number">
                         <input type="password" name="password" placeholder="Password" required>
