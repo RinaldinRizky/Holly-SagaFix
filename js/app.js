@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (validateEmail(email) && validatePhoneNumber(phone)) {
             try {
-                const response = await fetch('sendVerificationEmail.php', {
+                const response = await fetch('/sendVerificationEmail.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: email })
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = new URLSearchParams(formData);
 
         try {
-            const response = await fetch('php/placeOrder.php', {
+            const response = await fetch('/php/placeOrder.php', {
                 method: 'POST',
                 body: data,
             });
