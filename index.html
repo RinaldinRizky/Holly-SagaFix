@@ -540,7 +540,7 @@
 		<!-- all javascript -->
 		<!-- jquery latest version -->
 		<script>
-      document.addEventListener('alpine:init', () => {
+    document.addEventListener('alpine:init', () => {
             Alpine.store('cart', {
                 items: [],
                 total: 0,
@@ -585,7 +585,7 @@
 
                 if (validateEmail(email)) {
                     try {
-                        const response = await fetch('sendVerificationEmail.php', {
+                        const response = await fetch('/sendVerificationEmail.php', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ email: email })
@@ -626,7 +626,7 @@
                 const data = new URLSearchParams(formData);
 
                 try {
-                    const response = await fetch('placeOrder.php', {
+                    const response = await fetch('/php/placeOrder.php', {
                         method: 'POST',
                         body: data
                     });
