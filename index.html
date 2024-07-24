@@ -119,10 +119,10 @@
 															<input type="number" name="phone" id="phone" autocomplete="off">
 														</label>
 														<div class="cart-bottom clearfix">
-															<button href="#" id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" disabled>Check out</button>
+															<button href="#" id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
 														</div>
 														<div class="cart-bottom clearfix">
-															<button href="#" id="verifyButton" class="button-one floatright text-uppercase disabled" data-text="Verify" disabled>Verify</button>
+															<button href="#" id="verifyButton" class="button-one floatright text-uppercase disabled" data-text="Verify" onclick="sendVerificationEmail()">Verify</button>
 														</div>
 													</form>
 												</div>
@@ -540,7 +540,7 @@
 		<!-- jquery latest version -->
 		<script>
 			document.addEventListener('alpine:init', () => {
-    Alpine.store('cart', {
+		Alpine.store('cart', {
         items: [],
         total: 0,
         quantity: 0,
@@ -564,7 +564,60 @@
         }
     });
 });
+// Enable the verify button when email is entered
+document.getElementById('email').addEventListener('input', function() {
+            var email = document.getElementById('email').value;
+            document.getElementById('verifyButton').disabled = !email;
+        });
 
+        // Function to send verification email
+        function sendVerificationEmail() {
+            var email = document.getElementById('email').value;
+            if (email) {
+                fetch('sendVerificationEmail.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Verification email sent. Please check your email.');
+                    } else {
+                        alert('Error sending verification email.');
+                    }
+                });
+            }
+        }
+
+        // Function to place order
+        function placeOrder() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var whatsapp = document.getElementById('whatsapp').value;
+
+            if (!document.getElementById('checkoutButton').disabled) {
+                fetch('placeOrder.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: name, email: email, whatsapp: whatsapp })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        window.location.href = data.paymentUrl;
+                    } else {
+                        alert('Error placing order.');
+                    }
+                });
+            } else {
+                alert('Please verify your email before checking out.');
+            }
+        }
 document.addEventListener('DOMContentLoaded', () => {
     const checkoutButton = document.querySelector('#checkoutButton');
     const verifyButton = document.querySelector('#verifyButton');
