@@ -7,8 +7,6 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
-    //Load Composer's autoloader
-    require 'vendor/autoload.php';
 
     session_start();
     if (isset($_SESSION['SESSION_EMAIL'])) {
@@ -17,7 +15,7 @@
     }
 
     //Load Composer's autoloader
-    require 'vendor/autoload.php';
+    require '/vendor/autoload.php';
 
     include 'config.php';
     $msg = "";
