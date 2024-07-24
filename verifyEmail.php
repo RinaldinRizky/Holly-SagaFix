@@ -1,20 +1,17 @@
 <?php
-session_start();
+$email = $_GET['email'];
 
-if (isset($_GET['token'])) {
-    $token = $_GET['token'];
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // Tandai email sebagai terverifikasi di database atau storage lainnya
+    // Implementasikan sesuai kebutuhan
 
-    if (isset($_SESSION['email_verification'][$token])) {
-        $email = $_SESSION['email_verification'][$token];
-
-        // Tandai email sebagai terverifikasi di basis data atau sesi
-        $_SESSION['email_verified'] = true;
-        unset($_SESSION['email_verification'][$token]);
-        echo "Email Anda telah diverifikasi. Anda dapat melanjutkan proses checkout.";
-    } else {
-        echo "Token verifikasi tidak valid atau sudah kedaluwarsa.";
-    }
+    // Simpan status verifikasi di localStorage (opsional)
+    echo "<script>
+        localStorage.setItem('emailVerified', 'true');
+        alert('Email verified successfully.');
+        window.location.href = 'index.html'; // Ganti dengan halaman yang diinginkan setelah verifikasi
+    </script>";
 } else {
-    echo "Token verifikasi tidak disertakan.";
+    echo 'Invalid email address.';
 }
 ?>

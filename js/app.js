@@ -86,7 +86,6 @@ document.addEventListener('alpine:init', () => {
             this.items.push(newItem);
             this.quantity++;
             this.total += newItem.price;
-            console.log(this.total);
         },
         remove(itemToRemove) {
             const itemIndex = this.items.findIndex(item => item.id === itemToRemove.id);
@@ -94,13 +93,11 @@ document.addEventListener('alpine:init', () => {
                 this.total -= this.items[itemIndex].price;
                 this.items.splice(itemIndex, 1);
                 this.quantity--;
-                console.log(this.total);
             }
         }
     });
 });
 
-// Form Validation
 document.addEventListener('DOMContentLoaded', () => {
     const checkoutButton = document.querySelector('#checkoutButton');
     const verifyButton = document.querySelector('#verifyButton');
@@ -133,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Gagal mengirim email verifikasi.');
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
                 alert('Terjadi kesalahan saat mengirim email verifikasi.');
             }
         } else {
@@ -181,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 onSuccess: function(result) {
                     alert("Pembayaran Sukses!");
                     console.log(result);
+                    sendProductFiles();
                 },
                 onPending: function(result) {
                     alert("Menunggu Pembayaran!");
@@ -198,4 +196,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         }
     });
+
+    function sendProductFiles() {
+        const items = JSON.parse(document.querySelector('input[name="items"]').value);
+        items.forEach(item => {
+            // Kirim file sesuai dengan item yang dibeli
+            // Implementasikan fungsi ini sesuai kebutuhan
+            console.log(`Mengirim file untuk produk: ${item.name}`);
+        });
+    }
 });
