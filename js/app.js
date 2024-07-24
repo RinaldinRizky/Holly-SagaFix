@@ -35,73 +35,43 @@ document.addEventListener('alpine:init', () => {
             { id: 32, name: 'Dream Design', img: 'dreamfix.png', price: 370000},
         ],
         goToProductPage(id) {
-            if (id === 1) {
-                window.location.href = `summer-product.html?id=${id}`;
-            } else if (id === 2) {
-                window.location.href = `aura-product.html?id=${id}`;
-            }else if (id === 3) {
-                window.location.href = `womengrunge-product.html?id=${id}`;
-            }else if (id === 4) {
-                window.location.href = `wildbunch-product.html?id=${id}`;
-            }else if (id === 5) {
-                window.location.href = `womenpredict-product.html?id=${id}`;
-            }else if (id === 6) {
-                window.location.href = `watching-product.html?id=${id}`;
-            }else if (id === 7) {
-                window.location.href = `visionhotline-product.html?id=${id}`;
-            }else if (id === 8) {
-                window.location.href = `upside-product.html?id=${id}`;
-            }else if (id === 9) {
-                window.location.href = `teddy-product.html?id=${id}`;
-            }else if (id === 10) {
-                window.location.href = `sacrifice-product.html?id=${id}`;
-            }else if (id === 11) {
-                window.location.href = `retrochild-product.html?id=${id}`;
-            }else if (id === 12) {
-                window.location.href = `pride-product.html?id=${id}`;
-            }else if (id === 13) {
-                window.location.href = `maze-product.html?id=${id}`;
-            }else if (id === 14) {
-                window.location.href = `kissme-product.html?id=${id}`;
-            }else if (id === 15) {
-                window.location.href = `kinder-product.html?id=${id}`;
-            }else if (id === 16) {
-                window.location.href = `killinglove-product.html?id=${id}`;
-            }else if (id === 17) {
-                window.location.href = `killer-product.html?id=${id}`;
-            }else if (id === 18) {
-                window.location.href = `keepsmile-product.html?id=${id}`;
-            }else if (id === 19) {
-                window.location.href = `jumphigher-product.html?id=${id}`;
-            }else if (id === 20) {
-                window.location.href = `ilovepizza-product.html?id=${id}`;
-            }else if (id === 21) {
-                window.location.href = `iceworld-product.html?id=${id}`;
-            }else if (id === 22) {
-                window.location.href = `hollystore-product.html?id=${id}`;
-            }else if (id === 23) {
-                window.location.href = `hollymenu-product.html?id=${id}`;
-            }else if (id === 24) {
-                window.location.href = `h-ice-product.html?id=${id}`;
-            }else if (id === 25) {
-                window.location.href = `growpassion-product.html?id=${id}`;
-            }else if (id === 26) {
-                window.location.href = `secretflower-product.html?id=${id}`;
-            }else if (id === 27) {
-                window.location.href = `forgivegod-product.html?id=${id}`;
-            }else if (id === 28) {
-                window.location.href = `confused-product.html?id=${id}`;
-            }else if (id === 29) {
-                window.location.href = `chaijo.html?id=${id}`;
-            }else if (id === 30) {
-                window.location.href = `hersmile-product.html?id=${id}`;
-            }else if (id === 31) {
-                window.location.href = `dating-product.html?id=${id}`;
-            }else if (id === 32) {
-                window.location.href = `dream-product.html?id=${id}`;
-            }
+            const productPages = {
+                1: 'summer-product.html',
+                2: 'aura-product.html',
+                3: 'womengrunge-product.html',
+                4: 'wildbunch-product.html',
+                5: 'womenpredict-product.html',
+                6: 'watching-product.html',
+                7: 'visionhotline-product.html',
+                8: 'upside-product.html',
+                9: 'teddy-product.html',
+                10: 'sacrifice-product.html',
+                11: 'retrochild-product.html',
+                12: 'pride-product.html',
+                13: 'maze-product.html',
+                14: 'kissme-product.html',
+                15: 'kinder-product.html',
+                16: 'killinglove-product.html',
+                17: 'killer-product.html',
+                18: 'keepsmile-product.html',
+                19: 'jumphigher-product.html',
+                20: 'ilovepizza-product.html',
+                21: 'iceworld-product.html',
+                22: 'hollystore-product.html',
+                23: 'hollymenu-product.html',
+                24: 'h-ice-product.html',
+                25: 'growpassion-product.html',
+                26: 'secretflower-product.html',
+                27: 'forgivegod-product.html',
+                28: 'confused-product.html',
+                29: 'chaijo.html',
+                30: 'hersmile-product.html',
+                31: 'dating-product.html',
+                32: 'dream-product.html'
+            };
+            window.location.href = `${productPages[id]}?id=${id}`;
         }
-    }))
+    }));
 
     Alpine.store('cart', {
         items: [],
@@ -127,79 +97,105 @@ document.addEventListener('alpine:init', () => {
                 console.log(this.total);
             }
         }
-    })
-})
+    });
+});
 
 // Form Validation
-const checkoutButton = document.querySelector('.button-one');
-checkoutButton.disabled = true;
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutButton = document.querySelector('#checkoutButton');
+    const verifyButton = document.querySelector('#verifyButton');
+    const form = document.querySelector('#checkoutForm');
 
-const form = document.querySelector('#checkoutForm');
+    let emailVerified = false;
+    let phoneNumberVerified = false;
 
-form.addEventListener('input', function() {
-    let allFilled = true;
+    form.addEventListener('input', function() {
+        validateForm();
+    });
 
-    for (let i = 0; i < form.elements.length; i++) {
-        if (form.elements[i].type !== 'button' && form.elements[i].type !== 'submit') {
-            if (form.elements[i].value.trim() === '') {
-                allFilled = false;
-                break;
+    verifyButton.addEventListener('click', async function() {
+        const email = document.querySelector('input[name="email"]').value;
+        const phone = document.querySelector('input[name="phone"]').value;
+
+        if (validateEmail(email) && validatePhoneNumber(phone)) {
+            try {
+                const response = await fetch('sendVerificationEmail.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                if (response.ok) {
+                    alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
+                    emailVerified = true;
+                    phoneNumberVerified = true; // Asumsi nomor WhatsApp terverifikasi jika sudah valid
+                    localStorage.setItem('emailVerified', 'true');
+                } else {
+                    alert('Gagal mengirim email verifikasi.');
+                }
+            } catch (err) {
+                console.log(err);
+                alert('Terjadi kesalahan saat mengirim email verifikasi.');
             }
+        } else {
+            alert('Harap masukkan alamat email dan nomor WhatsApp yang valid.');
+        }
+
+        validateForm();
+    });
+
+    function validateForm() {
+        const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+        const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
+
+        if (allFilled && isEmailVerified) {
+            checkoutButton.disabled = false;
+            checkoutButton.classList.remove('disabled');
+        } else {
+            checkoutButton.disabled = true;
+            checkoutButton.classList.add('disabled');
         }
     }
 
-    if (allFilled) {
-        checkoutButton.disabled = false;
-        checkoutButton.classList.remove('disabled');
-    } else {
-        checkoutButton.disabled = true;
-        checkoutButton.classList.add('disabled');
-    }
-});
-
-
-// Kirim Data ketika tombol checkout di klik
-checkoutButton.addEventListener('click', async function(e){
-    e.preventDefault();
-    const formData = new FormData(form);
-    const data = new URLSearchParams(formData);
-    const objData = Object.fromEntries(data);
-    const message = formatMessage(objData);
-    // window.open('http://wa.me/6285161181837?text=' + encodeURIComponent(message));
-
-    try {
-        const response = await fetch('php/placeOrder.php', {
-            method: 'POST',
-            body: data,
-        });
-        const token = await response.text();
-        // console.log(token);
-            window.snap.pay(token)
-    } catch (err) {
-        console.log(err.message);
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
 
+    function validatePhoneNumber(phone) {
+        const re = /^\+?[0-9]{10,15}$/;
+        return re.test(phone);
+    }
 
+    checkoutButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+
+        try {
+            const response = await fetch('php/placeOrder.php', {
+                method: 'POST',
+                body: data,
+            });
+            const token = await response.text();
+            window.snap.pay(token, {
+                onSuccess: function(result) {
+                    alert("Pembayaran Sukses!");
+                    console.log(result);
+                },
+                onPending: function(result) {
+                    alert("Menunggu Pembayaran!");
+                    console.log(result);
+                },
+                onError: function(result) {
+                    alert("Pembayaran Gagal!");
+                    console.log(result);
+                },
+                onClose: function() {
+                    alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+                }
+            });
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
 });
-
-// contoh pesan whatsapp 
-const formatMessage = (obj) => {
-    return `Data Costumer 
-        Nama: ${obj.name}
-        Email: ${obj.email}
-        No Hp: ${obj.phone}
-Data Pesanan
-    ${JSON.parse(obj.items).map((item) => `${item.name} (${item.quantity} x ${rupiah(item.total)}) \n` )}
-    TOTAL: ${rupiah(obj.total)}
-    TERIMAKASIH`;
-}
-
-
-const rupiah = (number) => {
-    return new Intl.NumberFormat('id-ID',{
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-    }).format(number);
-};
-
