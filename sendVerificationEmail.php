@@ -1,28 +1,45 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'path/to/PHPMailer/src/Exception.php';
+require 'path/to/PHPMailer/src/PHPMailer.php';
+require 'path/to/PHPMailer/src/SMTP.php';
+
 session_start();
+$data = json_decode(file_get_contents('php://input'), true);
+$email = $data['email'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $email = $data['email'];
+// Buat token verifikasi unik
+$token = bin2hex(random_bytes(16));
+$_SESSION['email_verification'][$token] = $email;
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        // Generate a unique verification token
-        $token = bin2hex(random_bytes(16));
-        $_SESSION['email_verification'][$token] = $email;
+// Buat instance PHPMailer
+$mail = new PHPMailer(true);
 
-        // Send the verification email
-        $verificationLink = "http://yourdomain.com/verifyEmail.php?token=" . $token;
-        $subject = "Email Verification";
-        $message = "Please click the following link to verify your email: " . $verificationLink;
-        $headers = "From: no-reply@hollysaga.com";
+try {
+    // Pengaturan server
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com'; // Set SMTP server
+    $mail->SMTPAuth = true;
+    $mail->Username = 'hollysaga@gmail.com'; // SMTP username
+    $mail->Password = 'wbae irad idfr wudr'; // SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
 
-        if (mail($email, $subject, $message, $headers)) {
-            echo json_encode(['status' => 'success']);
-        } else {
-            echo json_encode(['status' => 'error']);
-        }
-    } else {
-        echo json_encode(['status' => 'error']);
-    }
+    // Penerima
+    $mail->setFrom('hollysaga@gmail.com', 'Mailer');
+    $mail->addAddress($email);
+
+    // Konten email
+    $verificationLink = "http://hollysaga.shop/verifyEmail.php?token=$token";
+    $mail->isHTML(true);
+    $mail->Subject = 'Email Verification';
+    $mail->Body = "Please click the link below to verify your email: <a href='$verificationLink'>$verificationLink</a>";
+
+    $mail->send();
+    echo 'Verification email has been sent';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 ?>

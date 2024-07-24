@@ -73,6 +73,7 @@ document.addEventListener('alpine:init', () => {
         }
     }));
 
+ 
     Alpine.store('cart', {
         items: [],
         total: 0,
@@ -100,14 +101,12 @@ document.addEventListener('alpine:init', () => {
     });
 });
 
-// Form Validation
 document.addEventListener('DOMContentLoaded', () => {
     const checkoutButton = document.querySelector('#checkoutButton');
     const verifyButton = document.querySelector('#verifyButton');
     const form = document.querySelector('#checkoutForm');
 
-    let emailVerified = false;
-    let phoneNumberVerified = false;
+    let emailVerified = localStorage.getItem('emailVerified') === 'true';
 
     form.addEventListener('input', function() {
         validateForm();
@@ -115,9 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     verifyButton.addEventListener('click', async function() {
         const email = document.querySelector('input[name="email"]').value;
-        const phone = document.querySelector('input[name="phone"]').value;
 
-        if (validateEmail(email) && validatePhoneNumber(phone)) {
+        if (validateEmail(email)) {
             try {
                 const response = await fetch('/sendVerificationEmail.php', {
                     method: 'POST',
@@ -126,9 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 if (response.ok) {
                     alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
-                    emailVerified = true;
-                    phoneNumberVerified = true; // Asumsi nomor WhatsApp terverifikasi jika sudah valid
-                    localStorage.setItem('emailVerified', 'true');
                 } else {
                     alert('Gagal mengirim email verifikasi.');
                 }
@@ -137,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Terjadi kesalahan saat mengirim email verifikasi.');
             }
         } else {
-            alert('Harap masukkan alamat email dan nomor WhatsApp yang valid.');
+            alert('Harap masukkan alamat email yang valid.');
         }
 
         validateForm();
@@ -159,11 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
-    }
-
-    function validatePhoneNumber(phone) {
-        const re = /^\+?[0-9]{10,15}$/;
-        return re.test(phone);
     }
 
     checkoutButton.addEventListener('click', async function(e) {

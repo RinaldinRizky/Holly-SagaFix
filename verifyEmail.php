@@ -9,6 +9,7 @@ if (isset($_GET['token'])) {
 
         // Tandai email sebagai terverifikasi di basis data atau sesi
         $_SESSION['email_verified'] = true;
+        unset($_SESSION['email_verification'][$token]);
         echo "Email Anda telah diverifikasi. Anda dapat melanjutkan proses checkout.";
     } else {
         echo "Token verifikasi tidak valid atau sudah kedaluwarsa.";
