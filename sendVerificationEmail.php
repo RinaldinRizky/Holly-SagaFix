@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = bin2hex(random_bytes(16));
 
     // Simpan token dan email di basis data atau sesi
-    // Contoh menggunakan sesi (pastikan sesi telah dimulai sebelumnya)
+    session_start();
     $_SESSION['email_verification'][$token] = $email;
 
     $verificationLink = "https://hollysaga.shop/verifyEmail.php?token=$token";

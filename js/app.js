@@ -131,110 +131,86 @@ document.addEventListener('alpine:init', () => {
 })
 
 // Form Validation
-const checkoutButton = document.querySelector('#checkoutButton');
-const verifyButton = document.querySelector('#verifyButton');
-checkoutButton.disabled = true;
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutButton = document.querySelector('#checkoutButton');
+    const verifyButton = document.querySelector('#verifyButton');
+    const form = document.querySelector('#checkoutForm');
 
-const form = document.querySelector('#checkoutForm');
+    let emailVerified = false;
+    let phoneNumberVerified = false;
 
-form.addEventListener('input', function() {
-    validateForm();
-});
+    form.addEventListener('input', function() {
+        validateForm();
+    });
 
-verifyButton.addEventListener('click', async function() {
-    // Kirim email verifikasi
-    const email = document.querySelector('input[name="email"]').value;
-    if (email) {
+    verifyButton.addEventListener('click', async function() {
+        const email = document.querySelector('input[name="email"]').value;
+        const phone = document.querySelector('input[name="phone"]').value;
+
+        if (validateEmail(email) && validatePhoneNumber(phone)) {
+            try {
+                const response = await fetch('sendVerificationEmail.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                if (response.ok) {
+                    alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
+                    emailVerified = true;
+                    phoneNumberVerified = true; // Asumsi nomor WhatsApp terverifikasi jika sudah valid
+                    localStorage.setItem('emailVerified', 'true');
+                } else {
+                    alert('Gagal mengirim email verifikasi.');
+                }
+            } catch (err) {
+                console.log(err);
+                alert('Terjadi kesalahan saat mengirim email verifikasi.');
+            }
+        } else {
+            alert('Harap masukkan alamat email dan nomor WhatsApp yang valid.');
+        }
+
+        validateForm();
+    });
+
+    function validateForm() {
+        const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+        const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
+
+        if (allFilled && isEmailVerified) {
+            checkoutButton.disabled = false;
+            checkoutButton.classList.remove('disabled');
+        } else {
+            checkoutButton.disabled = true;
+            checkoutButton.classList.add('disabled');
+        }
+    }
+
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    function validatePhoneNumber(phone) {
+        const re = /^\+?[0-9]{10,15}$/;
+        return re.test(phone);
+    }
+
+    checkoutButton.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = new URLSearchParams(formData);
+
         try {
-            const response = await fetch('path/to/verification/endpoint', {
+            const response = await fetch('php/placeOrder.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email })
+                body: data,
             });
-            if (response.ok) {
-                alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
-            } else {
-                alert('Gagal mengirim email verifikasi.');
-            }
-        } catch (err) {
-            console.log(err);
-            alert('Terjadi kesalahan saat mengirim email verifikasi.');
-        }
-    } else {
-        alert('Harap masukkan alamat email.');
-    }
-});
-
-function validateForm() {
-    let allFilled = true;
-    let emailVerified = localStorage.getItem('emailVerified') === 'true';
-
-    for (let i = 0; i < form.elements.length; i++) {
-        if (form.elements[i].type !== 'button' && form.elements[i].type !== 'submit') {
-            if (form.elements[i].value.trim() === '') {
-                allFilled = false;
-                break;
-            }
-        }
-    }
-
-    if (allFilled && emailVerified) {
-        checkoutButton.disabled = false;
-        checkoutButton.classList.remove('disabled');
-    } else {
-        checkoutButton.disabled = true;
-        checkoutButton.classList.add('disabled');
-    }
-}
-// const checkoutButton = document.querySelector('.button-one');
-// checkoutButton.disabled = true;
-
-// const form = document.querySelector('#checkoutForm');
-
-// form.addEventListener('input', function() {
-//     let allFilled = true;
-
-//     for (let i = 0; i < form.elements.length; i++) {
-//         if (form.elements[i].type !== 'button' && form.elements[i].type !== 'submit') {
-//             if (form.elements[i].value.trim() === '') {
-//                 allFilled = false;
-//                 break;
-//             }
-//         }
-//     }
-
-//     if (allFilled) {
-//         checkoutButton.disabled = false;
-//         checkoutButton.classList.remove('disabled');
-//     } else {
-//         checkoutButton.disabled = true;
-//         checkoutButton.classList.add('disabled');
-//     }
-// });
-
-
-// Kirim Data ketika tombol checkout di klik
-checkoutButton.addEventListener('click', async function(e){
-    e.preventDefault();
-    const formData = new FormData(form);
-    const data = new URLSearchParams(formData);
-    const objData = Object.fromEntries(data);
-    const message = formatMessage(objData);
-    // window.open('http://wa.me/6285161181837?text=' + encodeURIComponent(message));
-
-    try {
-        const response = await fetch('php/placeOrder.php', {
-            method: 'POST',
-            body: data,
-        });
-        const token = await response.text();
-        // console.log(token);
+            const token = await response.text();
             window.snap.pay(token, {
                 onSuccess: function(result) {
-                    // Setelah pembayaran berhasil
                     alert("Pembayaran Berhasil!");
-                    // Redirect ke Google Drive
-                    window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing'; // Ubah dengan ID file Google Drive yang sesuai
+                    window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing';
                 },
                 onPending: function(result) {
                     alert("Pembayaran Anda tertunda.");
@@ -243,11 +219,10 @@ checkoutButton.addEventListener('click', async function(e){
                     alert("Terjadi kesalahan dalam pembayaran.");
                 }
             });
-    } catch (err) {
-        console.log(err.message);
-    }
-
-
+        } catch (err) {
+            console.log(err.message);
+        }
+    });
 });
 
 // contoh pesan whatsapp 
