@@ -304,7 +304,7 @@
             <form action="register.php" enctype="multipart/form-data">
                 <div class="col-lg-6">
                     <div class="customer-login text-left">
-                        <h4 class="title-1 title-border text-uppercase mb-30">new customers</h4>
+                        <h4 class="title-1 title-border text-uppercase mb-30">New Member</h4>
                         <p class="text-gray">If you have an account with us, Please login!</p>
                         <div class="error-text" style="display: none;">Error</div>
                         <input type="text" name="fname" placeholder="First Name" required pattern="[a-zA-Z\s]*">
