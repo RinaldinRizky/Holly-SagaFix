@@ -11,7 +11,7 @@ if (isset($_GET['token'])) {
 
         unset($_SESSION['email_verification'][$token]);
 
-        header('Location: https://hollysaga.shop/checkout.php?verification=success');
+        header('Location: https://hollysaga.shop/index.html?verification=success');
         exit();
     } else {
         echo "Token verifikasi tidak valid.";
