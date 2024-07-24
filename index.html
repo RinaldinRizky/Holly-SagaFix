@@ -68,7 +68,7 @@
 						<div class="row">
 							<div class="col-md-4 offset-md-4 col-7">
 								<div class="logo text-md-center">
-									<a href="index.html"><img src="img/logo/logoholly.png" alt="" /></a>
+									<a href="index.html"><img src=" img/logo/logoholly.png " alt="" /></a>
 								</div>
 							</div>
 							<div class="col-md-4 col-5">
@@ -85,17 +85,17 @@
 												</div>
 												<div class="all-cart-product clearfix">
 													<template x-for="item in $store.cart.items" :key="item.id">
-														<div class="single-cart clearfix">
-															<div class="cart-photo">
-																<img :src="`img/product/${item.img}`" :alt="item.name" />
-															</div>
-															<div class="cart-info">
-																<h5 x-text="item.name"></h5>
-																<p class="mb-0">Price : <span x-text="rupiah(item.price)"></span></p>
-																<p class="mb-0">Qty : 01 </p>
-																<span class="cart-delete"><i @click="$store.cart.remove(item)" class="zmdi zmdi-close"></i></span>
-															</div>
+													<div class="single-cart clearfix">
+														<div class="cart-photo">
+															<img :src="`img/product/${item.img}`" :alt="item.name" />
 														</div>
+														<div class="cart-info">
+															<h5 x-text="item.name"></h5>
+															<p class="mb-0">Price : <span x-text="rupiah(item.price)"></span></p>
+															<p class="mb-0">Qty : 01 </p>
+															<span class="cart-delete"><i @click="$store.cart.remove(item)" class="zmdi zmdi-close"></i></span>
+														</div>
+													</div>
 													</template>
 												</div>
 												<div class="cart-totals">
@@ -103,26 +103,23 @@
 												</div>
 												<div class="form-container" x-show="$store.cart.items.length">
 													<form action="" id="checkoutForm">
-														<input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
-														<input type="hidden" name="total" x-model="$store.cart.total">
+														<input type= "hidden" name="items" x-model="JSON.stringify($store.cart.items)">
+														<input type= "hidden" name="total" x-model="$store.cart.total">
 														<h5>Customer Detail</h5>
 														<label for="name">
 															<span>Name</span>
-															<input type="text" name="name" id="name" required>
+															<input type="text" name="name" id="name">
 														</label>
 														<label for="email">
 															<span>Email</span>
-															<input type="email" name="email" id="email" required>
+															<input type="email" name="email" id="email">
 														</label>
 														<label for="phone">
 															<span>Whatsapp</span>
-															<input type="number" name="phone" id="phone" required autocomplete="off">
+															<input type="number" name="phone" id="phone" autocomplete="off">
 														</label>
-														<div class="cart-bottom clearfix">
-															<button type="button" id="verifyButton" class="button-one floatright text-uppercase disabled" data-text="Verify" onclick="sendVerificationEmail()" disabled>Verify</button>
-														</div>
-														<div class="cart-bottom clearfix">
-															<button type="button" id="checkoutButton" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
+														<div class="cart-bottom  clearfix">
+															<button href="#" class="button-one floatright text-uppercase disabled" data-text="Check out">Check out</button>
 														</div>
 													</form>
 												</div>
@@ -134,7 +131,6 @@
 						</div>
 					</div>
 				</div>
-			</header>
 				<!-- MAIN-MENU START -->
 				<div class="menu-toggle hamburger hamburger--emphatic d-none d-md-block">
 					<div class="hamburger-box">
@@ -539,116 +535,6 @@
 
 		<!-- all javascript -->
 		<!-- jquery latest version -->
-		<script>
-    //    document.addEventListener('alpine:init', () => {
-    //         Alpine.store('cart', {
-    //             items: [],
-    //             total: 0,
-    //             quantity: 0,
-    //             add(newItem) {
-    //                 const existingItem = this.items.find(item => item.id === newItem.id);
-    //                 if (existingItem) {
-    //                     alert('Produk ini sudah ada di keranjang!');
-    //                     return;
-    //                 }
-    //                 this.items.push(newItem);
-    //                 this.quantity++;
-    //                 this.total += newItem.price;
-    //             },
-    //             remove(itemToRemove) {
-    //                 const itemIndex = this.items.findIndex(item => item.id === itemToRemove.id);
-    //                 if (itemIndex > -1) {
-    //                     this.total -= this.items[itemIndex].price;
-    //                     this.items.splice(itemIndex, 1);
-    //                     this.quantity--;
-    //                 }
-    //             }
-    //         });
-    //     });
-
-    //     document.addEventListener('DOMContentLoaded', () => {
-    //         const checkoutButton = document.querySelector('#checkoutButton');
-    //         const verifyButton = document.querySelector('#verifyButton');
-    //         const form = document.querySelector('#checkoutForm');
-
-    //         let emailVerified = false;
-
-    //         form.addEventListener('input', function() {
-    //             const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-    //             verifyButton.disabled = !allFilled;
-    //             verifyButton.classList.toggle('disabled', !allFilled);
-    //         });
-
-    //         verifyButton.addEventListener('click', async function(e) {
-    //             e.preventDefault();
-    //             const email = form.querySelector('input[name="email"]').value;
-
-    //             if (validateEmail(email)) {
-    //                 try {
-    //                     const response = await fetch('/sendVerificationEmail.php', {
-    //                         method: 'POST',
-    //                         headers: { 'Content-Type': 'application/json' },
-    //                         body: JSON.stringify({ email: email })
-    //                     });
-    //                     if (response.ok) {
-    //                         alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
-    //                         emailVerified = true;
-    //                         localStorage.setItem('emailVerified', 'true');
-    //                         validateForm();
-    //                     } else {
-    //                         alert('Gagal mengirim email verifikasi.');
-    //                     }
-    //                 } catch (err) {
-    //                     console.error(err);
-    //                     alert('Terjadi kesalahan saat mengirim email verifikasi.');
-    //                 }
-    //             } else {
-    //                 alert('Harap masukkan alamat email yang valid.');
-    //             }
-    //         });
-
-    //         function validateForm() {
-    //             const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-    //             const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
-
-    //             checkoutButton.disabled = !(allFilled && isEmailVerified);
-    //             checkoutButton.classList.toggle('disabled', !(allFilled && isEmailVerified));
-    //         }
-
-    //         function validateEmail(email) {
-    //             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //             return re.test(email);
-    //         }
-
-    //         form.addEventListener('submit', async function(e) {
-    //             e.preventDefault();
-    //             const formData = new FormData(form);
-    //             const data = new URLSearchParams(formData);
-
-    //             try {
-    //                 const response = await fetch('/php/placeOrder.php', {
-    //                     method: 'POST',
-    //                     body: data
-    //                 });
-    //                 const token = await response.text();
-    //                 window.snap.pay(token, {
-    //                     onSuccess: function(result) {
-    //                         alert("Pembayaran Berhasil!");
-    //                         window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing';
-    //                     },
-    //                     onPending: function(result) {
-    //                         alert("Pembayaran Anda tertunda.");
-    //                     },
-    //                     onError: function(result) {
-    //                         alert("Terjadi kesalahan dalam pembayaran.");
-    //                     }
-    //                 });
-    //             } catch (err) {
-    //                 console.error(err.message);
-    //             }
-    //         });
-    //     });
-		</script>
 		<script src="js/vendor/jquery-3.6.0.min.js"></script>
 		<script src="js/vendor/jquery-migrate-3.3.2.min.js"></script>
 		<!-- bootstrap js -->
