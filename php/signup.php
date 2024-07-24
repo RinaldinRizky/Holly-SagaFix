@@ -51,7 +51,7 @@ if (!empty($fname) && !empty($lname) && !empty($email) && !empty($phone) && !emp
                             $mail->Username   = 'hollysagaofficial@gmail.com';
                             $mail->Password   = 'muot xgbu etnh hwgp';
                             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                            $mail->Port       = 587; // Use port 587 for TLS
+                            $mail->Port       = 456; // Use port 587 for TLS
 
                             //Recipients
                             $mail->setFrom('hollysagaofficial@gmail.com', 'Mailer');
