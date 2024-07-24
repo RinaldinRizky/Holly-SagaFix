@@ -540,114 +540,114 @@
 		<!-- all javascript -->
 		<!-- jquery latest version -->
 		<script>
-       document.addEventListener('alpine:init', () => {
-            Alpine.store('cart', {
-                items: [],
-                total: 0,
-                quantity: 0,
-                add(newItem) {
-                    const existingItem = this.items.find(item => item.id === newItem.id);
-                    if (existingItem) {
-                        alert('Produk ini sudah ada di keranjang!');
-                        return;
-                    }
-                    this.items.push(newItem);
-                    this.quantity++;
-                    this.total += newItem.price;
-                },
-                remove(itemToRemove) {
-                    const itemIndex = this.items.findIndex(item => item.id === itemToRemove.id);
-                    if (itemIndex > -1) {
-                        this.total -= this.items[itemIndex].price;
-                        this.items.splice(itemIndex, 1);
-                        this.quantity--;
-                    }
-                }
-            });
-        });
+    //    document.addEventListener('alpine:init', () => {
+    //         Alpine.store('cart', {
+    //             items: [],
+    //             total: 0,
+    //             quantity: 0,
+    //             add(newItem) {
+    //                 const existingItem = this.items.find(item => item.id === newItem.id);
+    //                 if (existingItem) {
+    //                     alert('Produk ini sudah ada di keranjang!');
+    //                     return;
+    //                 }
+    //                 this.items.push(newItem);
+    //                 this.quantity++;
+    //                 this.total += newItem.price;
+    //             },
+    //             remove(itemToRemove) {
+    //                 const itemIndex = this.items.findIndex(item => item.id === itemToRemove.id);
+    //                 if (itemIndex > -1) {
+    //                     this.total -= this.items[itemIndex].price;
+    //                     this.items.splice(itemIndex, 1);
+    //                     this.quantity--;
+    //                 }
+    //             }
+    //         });
+    //     });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkoutButton = document.querySelector('#checkoutButton');
-            const verifyButton = document.querySelector('#verifyButton');
-            const form = document.querySelector('#checkoutForm');
+    //     document.addEventListener('DOMContentLoaded', () => {
+    //         const checkoutButton = document.querySelector('#checkoutButton');
+    //         const verifyButton = document.querySelector('#verifyButton');
+    //         const form = document.querySelector('#checkoutForm');
 
-            let emailVerified = false;
+    //         let emailVerified = false;
 
-            form.addEventListener('input', function() {
-                const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-                verifyButton.disabled = !allFilled;
-                verifyButton.classList.toggle('disabled', !allFilled);
-            });
+    //         form.addEventListener('input', function() {
+    //             const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+    //             verifyButton.disabled = !allFilled;
+    //             verifyButton.classList.toggle('disabled', !allFilled);
+    //         });
 
-            verifyButton.addEventListener('click', async function(e) {
-                e.preventDefault();
-                const email = form.querySelector('input[name="email"]').value;
+    //         verifyButton.addEventListener('click', async function(e) {
+    //             e.preventDefault();
+    //             const email = form.querySelector('input[name="email"]').value;
 
-                if (validateEmail(email)) {
-                    try {
-                        const response = await fetch('/sendVerificationEmail.php', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ email: email })
-                        });
-                        if (response.ok) {
-                            alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
-                            emailVerified = true;
-                            localStorage.setItem('emailVerified', 'true');
-                            validateForm();
-                        } else {
-                            alert('Gagal mengirim email verifikasi.');
-                        }
-                    } catch (err) {
-                        console.error(err);
-                        alert('Terjadi kesalahan saat mengirim email verifikasi.');
-                    }
-                } else {
-                    alert('Harap masukkan alamat email yang valid.');
-                }
-            });
+    //             if (validateEmail(email)) {
+    //                 try {
+    //                     const response = await fetch('/sendVerificationEmail.php', {
+    //                         method: 'POST',
+    //                         headers: { 'Content-Type': 'application/json' },
+    //                         body: JSON.stringify({ email: email })
+    //                     });
+    //                     if (response.ok) {
+    //                         alert('Email verifikasi telah dikirim. Silakan periksa kotak masuk Anda.');
+    //                         emailVerified = true;
+    //                         localStorage.setItem('emailVerified', 'true');
+    //                         validateForm();
+    //                     } else {
+    //                         alert('Gagal mengirim email verifikasi.');
+    //                     }
+    //                 } catch (err) {
+    //                     console.error(err);
+    //                     alert('Terjadi kesalahan saat mengirim email verifikasi.');
+    //                 }
+    //             } else {
+    //                 alert('Harap masukkan alamat email yang valid.');
+    //             }
+    //         });
 
-            function validateForm() {
-                const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-                const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
+    //         function validateForm() {
+    //             const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
+    //             const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
 
-                checkoutButton.disabled = !(allFilled && isEmailVerified);
-                checkoutButton.classList.toggle('disabled', !(allFilled && isEmailVerified));
-            }
+    //             checkoutButton.disabled = !(allFilled && isEmailVerified);
+    //             checkoutButton.classList.toggle('disabled', !(allFilled && isEmailVerified));
+    //         }
 
-            function validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
+    //         function validateEmail(email) {
+    //             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //             return re.test(email);
+    //         }
 
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const formData = new FormData(form);
-                const data = new URLSearchParams(formData);
+    //         form.addEventListener('submit', async function(e) {
+    //             e.preventDefault();
+    //             const formData = new FormData(form);
+    //             const data = new URLSearchParams(formData);
 
-                try {
-                    const response = await fetch('/php/placeOrder.php', {
-                        method: 'POST',
-                        body: data
-                    });
-                    const token = await response.text();
-                    window.snap.pay(token, {
-                        onSuccess: function(result) {
-                            alert("Pembayaran Berhasil!");
-                            window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing';
-                        },
-                        onPending: function(result) {
-                            alert("Pembayaran Anda tertunda.");
-                        },
-                        onError: function(result) {
-                            alert("Terjadi kesalahan dalam pembayaran.");
-                        }
-                    });
-                } catch (err) {
-                    console.error(err.message);
-                }
-            });
-        });
+    //             try {
+    //                 const response = await fetch('/php/placeOrder.php', {
+    //                     method: 'POST',
+    //                     body: data
+    //                 });
+    //                 const token = await response.text();
+    //                 window.snap.pay(token, {
+    //                     onSuccess: function(result) {
+    //                         alert("Pembayaran Berhasil!");
+    //                         window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing';
+    //                     },
+    //                     onPending: function(result) {
+    //                         alert("Pembayaran Anda tertunda.");
+    //                     },
+    //                     onError: function(result) {
+    //                         alert("Terjadi kesalahan dalam pembayaran.");
+    //                     }
+    //                 });
+    //             } catch (err) {
+    //                 console.error(err.message);
+    //             }
+    //         });
+    //     });
 		</script>
 		<script src="js/vendor/jquery-3.6.0.min.js"></script>
 		<script src="js/vendor/jquery-migrate-3.3.2.min.js"></script>
