@@ -299,9 +299,9 @@
 			<!-- HEADING-BANNER END -->
 			<!-- SHOPPING-CART-AREA START -->
 	<div class="form">
-    		<div class="login-area pt-80 pb-80">
+    <div class="login-area pt-80 pb-80">
         <div class="container">
-            <form action="register.php" enctype="multipart/form-data">
+            <form action="register.php"  method="POST" enctype="multipart/form-data">
                 <div class="col-lg-6">
                     <div class="customer-login text-left">
                         <h4 class="title-1 title-border text-uppercase mb-30">New Member</h4>
