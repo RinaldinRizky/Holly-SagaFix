@@ -174,7 +174,20 @@ checkoutButton.addEventListener('click', async function(e){
         });
         const token = await response.text();
         // console.log(token);
-            window.snap.pay(token)
+            window.snap.pay(token, {
+                onSuccess: function(result) {
+                    // Setelah pembayaran berhasil
+                    alert("Pembayaran Berhasil!");
+                    // Redirect ke Google Drive
+                    window.location.href = 'https://drive.google.com/drive/folders/1YSDI6qi3X3cSE9IytoKQCaltHGGUpc8g?usp=sharing'; // Ubah dengan ID file Google Drive yang sesuai
+                },
+                onPending: function(result) {
+                    alert("Pembayaran Anda tertunda.");
+                },
+                onError: function(result) {
+                    alert("Terjadi kesalahan dalam pembayaran.");
+                }
+            });
     } catch (err) {
         console.log(err.message);
     }
