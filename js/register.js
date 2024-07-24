@@ -9,7 +9,7 @@ form.onsubmit = (e) => {
 submitbtn.onclick = () => {
     // start ajax
     let xhr = new XMLHttpRequest(); // create xml object
-    xhr.open("POST", "php/signup.php", true);
+    xhr.open("POST", "../php/signup.php", true);
     xhr.onload = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
