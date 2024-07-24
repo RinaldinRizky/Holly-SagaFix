@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (mail($email, $subject, $message, $headers)) {
         echo json_encode(['status' => 'success']);
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Gagal mengirim email.']);
+        echo json_encode(['status' => 'error']);
     }
 }
 ?>

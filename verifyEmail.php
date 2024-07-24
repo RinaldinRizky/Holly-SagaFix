@@ -7,14 +7,14 @@ if (isset($_GET['token'])) {
     if (isset($_SESSION['email_verification'][$token])) {
         $email = $_SESSION['email_verification'][$token];
 
-        $_SESSION['verified_emails'][$email] = true;
+        // Tandai email sebagai terverifikasi di basis data atau sesi
+        $_SESSION['email_verified'] = $email;
 
-        unset($_SESSION['email_verification'][$token]);
-
-        header('Location: https://hollysaga.shop/index.html?verification=success');
-        exit();
+        echo "Email Anda telah diverifikasi. Anda dapat melanjutkan proses checkout.";
     } else {
-        echo "Token verifikasi tidak valid.";
+        echo "Token verifikasi tidak valid atau sudah kedaluwarsa.";
     }
+} else {
+    echo "Token verifikasi tidak disertakan.";
 }
 ?>
