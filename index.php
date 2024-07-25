@@ -213,19 +213,11 @@
 					<div class="table">
 						<div class="table-cell">
 							<ul>
-								<li><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a>
-									<!-- <div class="customer-login text-left"> -->
-										<!-- <form action="login.php">
-											<h4 class="title-1 title-border text-uppercase mb-30">Login</h4>
-											<p class="text-gray">If you have an account with us, Please login!</p>
-											<input type="text" name="email" placeholder="Email here..." />
-											<input type="password" placeholder="Password" />
-											<p><a class="text-gray" href="#">Forget your password?</a></p>
-											<button class="button-one submit-button mt-15" data-text="login" type="submit">login</button>
-										</form> -->
-									<!-- </div> -->
-								</li>
+								<?php if (!isset($_SESSION['SESSION_EMAIL'])): ?>
+								<li><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a></li>
+								<?php else: ?>
 								<li><a href="my-account.html" title="My-Account"><i class="zmdi zmdi-account"></i></a></li>
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
