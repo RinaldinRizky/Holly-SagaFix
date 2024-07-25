@@ -46,7 +46,7 @@ if (isset($_POST['submit'])) {
             <div class="workinghny-form-grid">
                 <div class="main-mockup">
                     <div class="alert-close">
-                        <span class="fa fa-close"></span>
+                        <span class="fa fa-close" onclick="redirectToIndex()"></span>
                     </div>
                     <div class="w3l_form align-self">
                         <div class="left_grid_info">
@@ -73,13 +73,15 @@ if (isset($_POST['submit'])) {
     </section>
     <script src="js/jquery.min.js"></script>
     <script>
-        $(document).ready(function(c) {
-            $('.alert-close').on('click', function(c) {
-                $('.main-mockup').fadeOut('slow', function(c) {
-                    $('.main-mockup').remove();
-                });
-            });
-        });
+                function redirectToIndex() {
+                    window.location.href = "index.html"; }
+        // $(document).ready(function(c) {
+        //     $('.alert-close').on('click', function(c) {
+        //         $('.main-mockup').fadeOut('slow', function(c) {
+        //             $('.main-mockup').remove();
+        //         });
+        //     });
+        // });
     </script>
 </body>
 
