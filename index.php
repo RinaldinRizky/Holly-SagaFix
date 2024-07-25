@@ -112,30 +112,8 @@
 												<div class="cart-totals">
 													<h5 class="mb-0">Total <span class="floatright" x-text="rupiah($store.cart.total)"></span></h5>
 												</div>
-												<div class="form-container" x-show="$store.cart.items.length">
-													<form action="" id="checkoutForm">
-														<input type="hidden" name="items" x-model="JSON.stringify($store.cart.items)">
-														<input type="hidden" name="total" x-model="$store.cart.total">
-														<h5>Customer Detail</h5>
-														<label for="name">
-															<span>Name</span>
-															<input type="text" name="name" id="name" required>
-														</label>
-														<label for="email">
-															<span>Email</span>
-															<input type="email" name="email" id="email" required>
-														</label>
-														<label for="phone">
-															<span>Whatsapp</span>
-															<input type="numeric" name="phone" id="phone" required autocomplete="off">
-														</label>
-														<div class="cart-bottom clearfix">
-															<button type="button" id="verify-btn" class="button-one floatright text-uppercase" data-text="Verify">Verify</button>
-														</div>
-														<div class="cart-bottom clearfix">
-															<button type="button" id="checkout-btn" class="button-one floatright text-uppercase disabled" data-text="Check out" onclick="placeOrder()" disabled>Check out</button>
-														</div>
-													</form>
+												<div class="cart-bottom clearfix" x-show="$store.cart.items.length">
+													<button type="button" id="checkout-btn" class="button-one floatright text-uppercase" data-text="Check out" onclick="placeOrder()">Check out</button>
 												</div>
 											</div>
 										</li>
@@ -431,10 +409,9 @@
 										<!-- Single-product start -->
 										<div class="single-product col-xl-3 col-lg-4 col-md-6">
 											<div class="product-img">
-												<!-- <span class="pro-label new-label">new</span> -->
 												<a @click="goToProductPage(item.id)"><img :src="`img/product/${item.img}`" :alt="item.name" /></a>
 												<div class="product-action clearfix">
-													<a @click.prevent="$store.cart.add(item)" href="#" data-bs-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+													<a @click.prevent="isLoggedIn ? $store.cart.add(item) : alert('Silakan login untuk menambahkan barang ke keranjang')" href="#" data-bs-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
 												</div>
 											</div>
 											<div class="product-info clearfix">
@@ -443,7 +420,7 @@
 													<p class="floatright hidden-sm">T-Shirt Design</p>
 												</div>
 												<div class="fix">
-													<span x-text="rupiah(item.price)"class="pro-price floatleft"></span>
+													<span x-text="rupiah(item.price)" class="pro-price floatleft"></span>
 													<span class="pro-rating floatright">
 														<a href="#"><i class="zmdi zmdi-star"></i></a>
 														<a href="#"><i class="zmdi zmdi-star"></i></a>
@@ -453,7 +430,6 @@
 													</span>
 												</div>
 											</div>
-											</template>
 										</div>
 										<!-- Single-product end -->
 									</div>
@@ -567,5 +543,21 @@
 		<script src="js/plugins.js"></script>
 		<!-- main js -->
 		<script src="js/main.min.js"></script>
+		<script>
+			document.addEventListener('alpine:init', () => {
+            Alpine.store('user', {
+                isLoggedIn: document.getElementById('login-status').dataset.loggedIn === 'true'
+            });
+
+            Alpine.data('products', () => ({
+                items: [
+                    // data produk kamu
+                ],
+                get isLoggedIn() {
+                    return Alpine.store('user').isLoggedIn;
+                },
+            }));
+        });
+		</script>
 	</body>
 </html>

@@ -75,52 +75,8 @@ document.addEventListener('alpine:init', () => {
     
     document.addEventListener('DOMContentLoaded', () => {
         const checkoutButton = document.querySelector('#checkout-btn');
-        const verifyButton = document.querySelector('#verify-btn');
         const form = document.querySelector('#checkoutForm');
-    
-        let emailVerified = false;
-    
-        form.addEventListener('input', function() {
-            validateForm();
-        });
-    
-        verifyButton.addEventListener('click', function() {
-            const email = document.querySelector('input[name="email"]').value;
-    
-            fetch('sendVerificationEmail.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Verification email sent.') {
-                    alert('Verification email sent. Please check your inbox.');
-                    localStorage.setItem('emailVerified', 'true');
-                    emailVerified = true;
-                    validateForm();
-                } else {
-                    alert('Failed to send verification email: ' + data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    
-        function validateForm() {
-            const allFilled = Array.from(form.elements).every(element => element.value.trim() !== '');
-            const isEmailVerified = localStorage.getItem('emailVerified') === 'true';
-    
-            if (allFilled && isEmailVerified) {
-                checkoutButton.disabled = false;
-                checkoutButton.classList.remove('disabled');
-            } else {
-                checkoutButton.disabled = true;
-                checkoutButton.classList.add('disabled');
-            }
-        }
-    
+        
         checkoutButton.addEventListener('click', async function(e) {
             e.preventDefault();
             const formData = new FormData(form);

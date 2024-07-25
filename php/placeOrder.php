@@ -9,6 +9,8 @@ require_once dirname(__FILE__) . '/pathofproject/Midtrans.php'; */
 
 require_once dirname(__FILE__) . '/midtrans-php-master/Midtrans.php';
 
+require 'config.php';
+
 //SAMPLE REQUEST START HERE
 
 // Set your Merchant Server Key
@@ -40,4 +42,15 @@ foreach ($params['item_details'] as &$item) {
 }
 $snapToken = \Midtrans\Snap::getSnapToken($params);
 echo $snapToken;
+
+// Simpan data order ke database
+$orderID = $params['transaction_details']['order_id'];
+$email = $_POST['email'];
+foreach ($params['item_details'] as $item) {
+    $productName = $item['name'];
+    $price = $item['price'];
+    $downloadLink = 'URL_TO_DOWNLOAD_FILE'; // Ganti dengan link file yang sesuai
+    $insertOrderQuery = "INSERT INTO orders (order_id, email, product_name, price, download_link) VALUES ('$orderID', '$email', '$productName', '$price', '$downloadLink')";
+    mysqli_query($conn, $insertOrderQuery);
+}
 ?>
