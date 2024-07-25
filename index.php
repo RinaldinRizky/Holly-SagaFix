@@ -544,20 +544,20 @@
 		<!-- main js -->
 		<script src="js/main.min.js"></script>
 		<script>
-			document.addEventListener('alpine:init', () => {
-            Alpine.store('user', {
-                isLoggedIn: document.getElementById('login-status').dataset.loggedIn === 'true'
-            });
+		// 	document.addEventListener('alpine:init', () => {
+        //     Alpine.store('user', {
+        //         isLoggedIn: document.getElementById('login-status').dataset.loggedIn === 'true'
+        //     });
 
-            Alpine.data('products', () => ({
-                items: [
-                    // data produk kamu
-                ],
-                get isLoggedIn() {
-                    return Alpine.store('user').isLoggedIn;
-                },
-            }));
-        });
-		</script>
+        //     Alpine.data('products', () => ({
+        //         items: [
+        //             // data produk kamu
+        //         ],
+        //         get isLoggedIn() {
+        //             return Alpine.store('user').isLoggedIn;
+        //         },
+        //     }));
+        // });
+		// </script>
 	</body>
 </html>
