@@ -7,6 +7,10 @@
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
 
+    // Include Library PHP Mailer
+    include('asset/phpmailer/Exception.php');
+    include('asset/phpmailer/PHPMailer.php');
+    include('asset/phpmailer/SMTP.php');
     //Load Composer's autoloader
     require 'vendor/autoload.php';
 
