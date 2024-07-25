@@ -176,7 +176,7 @@ button:hover {
     padding: 0px;
     flex-basis: 50%;
     -webkit-flex-basis: 50%;
-    background: #00c16e;
+    background: #c9538d;
     padding: 100px 50px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -218,7 +218,7 @@ button:hover {
     position: absolute;
     right: -5px;
     top: -5px;
-    background: #62c16e;
+    background: #c9538d;
     border-radius: 50px;
     color: #fff;
     text-align: center;
@@ -267,14 +267,14 @@ button:hover {
 }
 
 .w3l-mockup-form input:focus {
-    border-color: #00c16e;
+    border-color: #c9538d;
 }
 
 .w3l-mockup-form button {
     font-size: 18px;
     color: #fff;
     width: 100%;
-    background: #00c16e;
+    background: #c9538d;
     border: none;
     padding: 14px 15px;
     font-weight: 500;
@@ -286,7 +286,7 @@ button:hover {
 }
 
 .w3l-mockup-form button:hover {
-    background: #4ca356;
+    background: #a32863;
 }
 
 .w3l-mockup-form .social-icons ul li {
