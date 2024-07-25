@@ -1,3 +1,8 @@
+
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html class="no-js" lang="en">
 	<head>
@@ -209,6 +214,7 @@
 					</div>
 					<!-- Slider-banner end -->
 				</div>
+				<?php session_start(); ?>
 				<div class="sidebar-account d-none d-md-block">
 					<div class="table">
 						<div class="table-cell">
