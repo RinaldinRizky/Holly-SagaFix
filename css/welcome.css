@@ -34,16 +34,30 @@ h1 {
     margin-bottom: 20px;
 }
 
-.logout-button {
+.logout-button, .back-button {
     display: inline-block;
     padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 10px;
+}
+
+.logout-button {
     background-color: #c9538d;
     color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
 }
 
 .logout-button:hover {
     background-color: #b0487d;
+}
+
+.back-button {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.back-button:hover {
+    background-color: #e0e0e0;
 }

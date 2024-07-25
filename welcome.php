@@ -28,9 +28,10 @@ if (mysqli_num_rows($query) > 0) {
 <body>
     <div class="container">
         <div class="welcome-box">
-            <img src="path-to-your-logo.png" alt="Logo" class="logo">
+            <img src="/img/logo-h.png" alt="Logo" class="logo">
             <h1>Welcome, <?php echo $userName; ?></h1>
             <a href="logout.php" class="logout-button">Logout</a>
+            <a href="index.php" class="back-button">Back to Home</a>
         </div>
     </div>
 </body>
