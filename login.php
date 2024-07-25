@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
                         <form action="" method="post">
                             <input type="email" class="email" name="email" placeholder="Enter Your Email" required>
                             <input type="password" class="password" name="password" placeholder="Enter Your Password" required>
-                            <p><a href="forgot-password.php" style="margin-bottom: 15px; display: block; text-align: right;">Forgot Password?</a></p>
+                            <!-- <p><a href="forgot-password.php" style="margin-bottom: 15px; display: block; text-align: right;">Forgot Password?</a></p> -->
                             <button name="submit" class="btn" type="submit">Login</button>
                         </form>
                         <div class="social-icons">
