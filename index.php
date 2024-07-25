@@ -215,9 +215,9 @@
 						<div class="table-cell">
 							<ul>
 								<?php if (!isset($_SESSION['SESSION_EMAIL'])): ?>
-								<li><a href="my-account.html" title="My-Account"><i class="zmdi zmdi-account"></i></a></li>
+								<li?><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a></li>
 								<?php else: ?>
-								<li><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a></li>
+								<li><a href="my-account.html" title="My-Account"><i class="zmdi zmdi-account"></i></a></li>
 								<?php endif; ?>
 							</ul>
 						</div>
