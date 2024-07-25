@@ -20,7 +20,7 @@ if (isset($_POST['submit'])) {
     if (mysqli_num_rows($result) === 1) {
         $_SESSION['SESSION_EMAIL'] = $email;
         header("Location: welcome.php");
-        die();
+        exit();
     } else {
         $msg = "<div class='alert alert-danger'>Email or password do not match.</div>";
     }
