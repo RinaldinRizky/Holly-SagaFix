@@ -45,7 +45,7 @@ if (isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <link href="//fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
     <script src="https://kit.fontawesome.com/af562a2a63.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon_holly.png">
 </head>
