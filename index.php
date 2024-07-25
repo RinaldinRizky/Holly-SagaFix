@@ -213,7 +213,7 @@
 					<div class="table">
 						<div class="table-cell">
 							<ul>
-								<li?><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a>
+								<li><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a>
 							</li>
 								<li><a href="welcome.php" title="My-Account"><i class="zmdi zmdi-account"></i></a></li>
 							</ul>
