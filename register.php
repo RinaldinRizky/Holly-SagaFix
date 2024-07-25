@@ -139,13 +139,13 @@
 
     <script src="js/jquery.min.js"></script>
     <script>
-        $(document).ready(function (c) {
-            $('.alert-close').on('click', function (c) {
-                $('.main-mockup').fadeOut('slow', function (c) {
-                    $('.main-mockup').remove();
-                });
-            });
-        });
+        // $(document).ready(function (c) {
+        //     $('.alert-close').on('click', function (c) {
+        //         $('.main-mockup').fadeOut('slow', function (c) {
+        //             $('.main-mockup').remove();
+        //         });
+        //     });
+        // });
     </script>
 
 </body>
