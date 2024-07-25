@@ -41,6 +41,10 @@ h1 {
     text-decoration: none;
     transition: background-color 0.3s;
     margin: 10px;
+    -webkit-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+    -ms-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
 }
 
 .logout-button {
