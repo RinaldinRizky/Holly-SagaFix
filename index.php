@@ -56,6 +56,17 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-12">
+							<!-- header-search-mobile start -->
+							<div class="header-search-mobile">
+								<div class="table">
+									<div class="table-cell">
+										<ul>
+											<li><a href="register.php"><i class="zmdi zmdi-lock"></i></a></li>
+											<li><a href="welcome.php"><i class="zmdi zmdi-account"></i></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
