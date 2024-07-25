@@ -209,16 +209,12 @@
 					</div>
 					<!-- Slider-banner end -->
 				</div>
-				<?php session_start(); ?>
 				<div class="sidebar-account d-none d-md-block">
 					<div class="table">
 						<div class="table-cell">
 							<ul>
-								<?php if (!isset($_SESSION['SESSION_EMAIL'])): ?>
 								<li?><a href="register.php" title="Login"><i class="zmdi zmdi-lock"></i></a></li>
-								<?php else: ?>
 								<li><a href="welcome.php" title="My-Account"><i class="zmdi zmdi-account"></i></a></li>
-								<?php endif; ?>
 							</ul>
 						</div>
 					</div>

@@ -5,15 +5,6 @@
 .title-border span {
   color: #c9538d;
 }
-
-.header-right .my-account-icon::before {
-  content: url('path/to/my-account-icon.png');
-}
-
-.header-right .login-icon::before {
-  content: url('path/to/login-icon.png');
-}
-
 /* -----------------------------------------------------
 	Font-size
 ----------------------------------------------------- */
