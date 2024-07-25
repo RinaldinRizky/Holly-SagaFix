@@ -11,9 +11,29 @@ $query = mysqli_query($conn, "SELECT * FROM users WHERE email='{$_SESSION['SESSI
 
 if (mysqli_num_rows($query) > 0) {
     $row = mysqli_fetch_assoc($query);
-    echo "Welcome " . $row['name'] . " <a href='logout.php'>Logout</a>";
+    $userName = $row['name'];
 } else {
-    echo "User not found.";
+    $userName = "User not found.";
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="/css/welcome.css">
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-box">
+            <img src="path-to-your-logo.png" alt="Logo" class="logo">
+            <h1>Welcome, <?php echo $userName; ?></h1>
+            <a href="logout.php" class="logout-button">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
+
 

@@ -74,7 +74,7 @@ if (isset($_POST['submit'])) {
     <script src="js/jquery.min.js"></script>
     <script>
                 function redirectToIndex() {
-                    window.location.href = "index.html"; }
+                    window.location.href = "index.php"; }
     </script>
 </body>
 
