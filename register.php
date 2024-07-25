@@ -14,11 +14,11 @@
     //Load Composer's autoloader
     require 'vendor/autoload.php';
 
-    // session_start();
-    // if (isset($_SESSION['SESSION_EMAIL'])) {
-    //     header("Location: welcome.php");
-    //     die();
-    // }
+    session_start();
+    if (isset($_SESSION['SESSION_EMAIL'])) {
+        header("Location: welcome.php");
+        die();
+    }
 
 
 
