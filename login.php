@@ -10,18 +10,6 @@ if (isset($_SESSION['SESSION_EMAIL'])) {
 include 'config.php';
 $msg = "";
 
-if (isset($_GET['verification'])) {
-    if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users WHERE code='{$_GET['verification']}'")) > 0) {
-        $query = mysqli_query($conn, "UPDATE users SET code='' WHERE code='{$_GET['verification']}'");
-        
-        if ($query) {
-            $msg = "<div class='alert alert-success'>Account verification has been successfully completed. You can now <a href='login.php'>login here</a>.</div>";
-        }
-    } else {
-        header("Location: index.php");
-    }
-}
-
 if (isset($_POST['submit'])) {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, md5($_POST['password']));
@@ -30,14 +18,9 @@ if (isset($_POST['submit'])) {
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) === 1) {
-        $row = mysqli_fetch_assoc($result);
-
-        if (empty($row['code'])) {
-            $_SESSION['SESSION_EMAIL'] = $email;
-            header("Location: welcome.php");
-        } else {
-            $msg = "<div class='alert alert-info'>First verify your account and try again.</div>";
-        }
+        $_SESSION['SESSION_EMAIL'] = $email;
+        header("Location: welcome.php");
+        die();
     } else {
         $msg = "<div class='alert alert-danger'>Email or password do not match.</div>";
     }
@@ -75,7 +58,7 @@ if (isset($_POST['submit'])) {
                         <?php echo $msg; ?>
                         <form action="" method="post">
                             <input type="email" class="email" name="email" placeholder="Enter Your Email" required>
-                            <input type="password" class="password" name="password" placeholder="Enter Your Password" style="margin-bottom: 2px;" required>
+                            <input type="password" class="password" name="password" placeholder="Enter Your Password" required>
                             <p><a href="forgot-password.php" style="margin-bottom: 15px; display: block; text-align: right;">Forgot Password?</a></p>
                             <button name="submit" class="btn" type="submit">Login</button>
                         </form>
@@ -100,3 +83,4 @@ if (isset($_POST['submit'])) {
 </body>
 
 </html>
+
